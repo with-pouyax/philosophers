@@ -70,6 +70,8 @@ int main(int argc, char *argv[])
 17- but what really we see twice first message and twice second message.
     it means that the two threads are running in parallel.
 18- here my treads are returning an integer value, so I can do error checking.
+19- the return value of the thread in case of success is 0.
+    if the return value is not 0, it means that the thread creation failed. 
          
  */
 
