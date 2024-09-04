@@ -95,6 +95,19 @@ int main (int argc, char *argv[])
 
 /* 
 - so the correct way to do this is to create all the threads first and then join them.
+- now if we lunch this, we will see:
+thread 0 has been started
+thread 1 has been started
+thread 2 has been started
+thread 3 has been started
+thread 0 has finished
+thread 1 has finished
+thread 2 has finished
+thread 3 has finished
+mails = 4000000
+- so now we see that all the threads are running in parallel.
+- consider that this is not the exact order of the threads, this is just
+the way we print the messages.
  */
 
 void *routine(void *arg)
@@ -117,13 +130,13 @@ int main (int argc, char *argv[])
         if (pthread_create(th + i, NULL, &routine, NULL))
             return 1;
     printf("thread %d has been started\n", i);
-    if (pthread_join(th[i], NULL))
-        return 2;
-    printf("thread %d has finished\n", i);
 
     }
     for (i = 0; i < 4; i++)
     {
+    if (pthread_join(th[i], NULL))
+        return 2;
+    printf("thread %d has finished\n", i);
         
     }
     pthread_mutex_destroy(&mutex, NULL);
