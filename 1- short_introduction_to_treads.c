@@ -37,7 +37,7 @@ and we will use it to sore the thread id.
 #include <unistd.h>
 
 //code 1
-/* void *routine()
+void *routine()
 {
     printf("test from threads\n");
     return NULL;
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     pthread_join(t1, NULL);
 
     return 0;
-} */
+}
 
 
 /* 
@@ -71,8 +71,7 @@ int main(int argc, char *argv[])
     it means that the two threads are running in parallel.
 18- here my treads are returning an integer value, so I can do error checking.
 19- the return value of the thread in case of success is 0.
-    if the return value is not 0, it means that the thread creation failed. 
-         
+    if the return value is not 0, it means that the thread creation failed.
  */
 
 void *routine()
