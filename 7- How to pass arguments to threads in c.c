@@ -171,35 +171,3 @@ This approach avoids the need for dynamic memory allocation (malloc) and free, a
  pthread_create, and then casting it back to an integer in the thread function.
  */
 
-
-#include <stdio.h>
-#include <pthread.h>
-
-int primes[10] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
-
-void *routine(void *arg) {
-    int index = (int)(size_t)arg;  // Cast back to integer
-    printf("The prime number is %d\n", primes[index]);
-    return NULL;
-}
-
-int main() {
-    pthread_t th[10];
-
-    for (int i = 0; i < 10; i++) {
-        // Pass the value of i as an argument by casting to void*
-        if (pthread_create(&th[i], NULL, &routine, (void*)(size_t)i)) {
-            perror("failed to create thread");
-        }
-    }
-
-    for (int i = 0; i < 10; i++) {
-        if (pthread_join(th[i], NULL)) {
-            perror("failed to join thread");
-        }
-    }
-
-    return 0;
-}
-
-
