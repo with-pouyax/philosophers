@@ -1,5 +1,5 @@
 /* 
-- imagine we have sort of mail box, and we have a few listeners that all thez do is
+- imagine we have sort of mail box, and we have a few listeners that all they do is
 increment the number of mails.
 - at the end once we are listening, once the thread finishes their execution, 
 I want to just print the number of mails.
@@ -122,7 +122,7 @@ t1 write = 30, so t2 increment = 30, but the write gonna be 24 because it will i
 persentage of 6/30 = 20%. which is a big issue. We call this a race condition.
 - but you might say mail++; is not  3 operations (read, increment, write).
 - ok we can take a look at the assembly code.
-- to do that we can use gcc -s main.c, mow if we go to the main.s file, we can see
+- to do that we can use gcc -s main.c, now if we go to the main.s file, we can see
 L3:
     movl    mails(%rip), %eax
     addl    $1, %eax

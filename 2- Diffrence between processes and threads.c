@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 - I will notic that we get the same process ID.
 - why is that?
 - first because processes can contain multiple threads, but a thread cannot contain multiple processes.
-- second, regarding the address space, if you remember buy each fork
+- second, regarding the address space, if you remember by each fork
 we used to say when we are forking, we are duplicating all the variables into the 
 child process, and we can modify them individually.
 - but with threads, there is a big difference. we have all the variables in the same

@@ -27,7 +27,7 @@ int main (int argc, char *argv[])
     pthread_mutex_init(&mutex, NULL);
     for (i = 0; i < 4; i++)
     {
-        if (pthread_create(th + i, NULL, &routine, NULL))
+        if (pthread_create(th + i, NULL, &routine, NULL)) //instead th + i, we can use &th[i]
             return 1;
     if (pthread_join(th[i], NULL))
         return 2;

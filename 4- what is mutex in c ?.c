@@ -4,7 +4,7 @@
 - mutex is sort of a lock around a sections of code.
 - so what we can do is to initialize a variable called luck,
 and set it to 1 whenevr we are doing something and set it to 0
-when we are done, and before al this check if luck is already 1.
+when we are done, and before all this check if luck is already 1.
 - if the luck is already 1, then we should wait until luck is 0.
 - in this way wat would happen is that if thread tries to actually
 increment the mails variable, well it certainly will increment it
