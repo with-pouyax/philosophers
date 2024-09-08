@@ -92,27 +92,27 @@ it is hard to keep track of all the memory that we allocated. in next file we wi
  
  */
 
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 void *roll_dice(void *arg)
 {
-
-    int value = rand() % 6 + 1; // this will generate a random number between 1 and 6
     int *result = malloc(sizeof(int));
+    int value = rand() % 6 + 1;
     *result = value;
-    printf("The dice rolled %d\n", value);
-    return (void*) &value;
+    return((void*)result);
 }
 
-int main(int argc, char *argv[])
+int main(void)
 {
     int *res;
-    srand(time(NULL)); // it will seed the random number generator
+    srand(time(NULL));
     pthread_t th;
-    if (pthread_create(&th, NULL, &routine, NULL))
+
+    if (pthread_create(&th, NULL, &roll_dice, NULL))
         return 1;
-    if (pthread_join(th, (void**) &res) != 0)
+    if (pthread_join(th, (void **)&res))
         return 2;
-    printf("The dice rolled %d\n", *res);
-    free(res);
-    return 0;
+    printf("%d\n", *res);
 }
