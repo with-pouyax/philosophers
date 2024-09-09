@@ -1,6 +1,6 @@
 /* 
 - now we will see how to pass arguments to threads in c
-- in certain point, you might also want to do something based on the thead creation order. how can you do that with pthreads API?
+- in certain point, you might also want to do something based on the thread creation order. how can you do that with pthreads API?
 - first lets start with creating a problem.
 - imagine we have a global array of prime numbers.
 - the problem is : create 10 threads, each taking a unique prime from the primes array and print it to screen.
@@ -67,7 +67,7 @@ now you will see 10 10 10 10 10 10 10 10 10 10.
 - we have here 10 pthread_create calls, so we 10 threads that get created, but they dont really start doing anything because they sleep
 for 1 second, and in that one second all the threads are created, so  in pthread_create loop, i went from 0 to 9, and then all the threads
 started executing, and they all got the same value of i, which is 10. and that is why we see 10 10 10 10 10 10 10 10 10 10. and the value
-for all was 0 because after the last member arraz in memory, there is a 0. because there were 0 in the memory address that we were referencing.
+for all was 0 because after the last member array in memory, there is a 0. because there were 0 in the memory address that we were referencing.
 why 0 ? it is garbage value, it is not initialized.
  */
 

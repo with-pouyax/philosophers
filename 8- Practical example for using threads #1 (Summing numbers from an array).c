@@ -6,7 +6,7 @@ to threads in c.
 - to sume up the numbers in the primes array.
 - so it is easy, we have to send the first half to the first
 thread, and the second half to the second thread.
-- so we will get two sums, and we will sum them up.
+- so we will get two sums in main, and we will sum them up.
 - so first we change the ecerthing from last video code
 to 2, because we need 2 threads now.
 but we cant pass to it now the i, because I want to pass
@@ -23,7 +23,7 @@ void *routine(void *arg)
     int sum = 0;
     for (int j = 0; j < 5; j++)
     {
-        sum += primes[index + i];
+        sum += primes[index + j];
     }
     *(int*) arg = sum;
     return arg;
