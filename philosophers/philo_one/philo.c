@@ -30,11 +30,11 @@ void set_simulation_end(t_data *data, int value)
 // Getter for simulation_end
 int get_simulation_end(t_data *data)
 {
-    int value;
-    pthread_mutex_lock(&data->simulation_mutex);
-    value = data->simulation_end;
+    int value; // Declare a variable to store the value
+    pthread_mutex_lock(&data->simulation_mutex); // Lock the simulation mutex
+    value = data->simulation_end; // Get the value
     pthread_mutex_unlock(&data->simulation_mutex);
-    return value;
+    return value; // Return the value
 }
 
 // Setter for last_meal_time
@@ -94,9 +94,14 @@ int get_ate_enough(t_philosopher *philo)
 // Get current time in ms
 long long get_time_in_ms(t_data *data)
 {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000)) - data->start_time;
+    struct timeval tv; // struct timeval is defined in sys/time.h and contains tv_sec and tv_usec fields.
+                       // tv_sec is the number of seconds since the Epoch, which is 00:00:00 UTC on 1 January 1970.
+                       // tv_usec is the number of microseconds (1/1,000,000 of a second) since the last full second.
+    gettimeofday(&tv, NULL); // gettimeofday is defined in sys/time.h and fills the tv struct with the current time. 
+                             // The second argument is a timezone struct, which is not used here.
+    return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000)) - data->start_time; // by tv.tv_sec * 1000 we convert seconds to milliseconds
+                                                                            // by tv.tv_usec / 1000 we convert microseconds to milliseconds
+                                                                            // by subtracting data->start_time we get the time since the start of the simulation
 }
 
 // Custom usleep function that checks for simulation_end
@@ -123,44 +128,50 @@ void print_message(t_philosopher *philo, char *message)
 // Philosopher's eating behavior
 void philosopher_eat(t_philosopher *philo)
 {
-    if (get_simulation_end(philo->data))
-        return;
+    if (get_simulation_end(philo->data)) // check if the simulation ended
+        return; // if it did, return
 
-    if (philo->data->number_of_philosophers == 1)
+    if (philo->data->number_of_philosophers == 1) // if there is only one philosopher
     {
-        pthread_mutex_lock(&philo->left_fork->mutex);
-        print_message(philo, "has taken a fork");
-        custom_usleep(philo->data->time_to_die, philo->data);
-        print_message(philo, "died");
-        pthread_mutex_unlock(&philo->left_fork->mutex);
-        return;
+        pthread_mutex_lock(&philo->left_fork->mutex); // take the fork
+        print_message(philo, "has taken a fork"); // print message that the philosopher has taken a fork
+        custom_usleep(philo->data->time_to_die, philo->data); // sleep for the specified time
+        print_message(philo, "died"); // print message that the philosopher died
+        pthread_mutex_unlock(&philo->left_fork->mutex); // unlock the fork
+        return; // return
     }
 
-    if (philo->id % 2 == 0)
+    if (philo->id % 2 == 0) // if the philosopher id is even
     {
-        pthread_mutex_lock(&philo->right_fork->mutex);
-        print_message(philo, "has taken a fork");
-        pthread_mutex_lock(&philo->left_fork->mutex);
-        print_message(philo, "has taken a fork");
+        pthread_mutex_lock(&philo->right_fork->mutex); // take the right fork
+        print_message(philo, "has taken a fork"); // print message that the philosopher has taken a fork
+        pthread_mutex_lock(&philo->left_fork->mutex); // take the left fork
+        print_message(philo, "has taken a fork"); // print message that the philosopher has taken a fork
     }
-    else
+    else // if the philosopher id is odd
     {
-        pthread_mutex_lock(&philo->left_fork->mutex);
-        print_message(philo, "has taken a fork");
-        pthread_mutex_lock(&philo->right_fork->mutex);
-        print_message(philo, "has taken a fork");
+        pthread_mutex_lock(&philo->left_fork->mutex); // take the left fork first
+        print_message(philo, "has taken a fork"); // print message that the philosopher has taken a fork
+        pthread_mutex_lock(&philo->right_fork->mutex); // take the right fork
+        print_message(philo, "has taken a fork"); // print message that the philosopher has taken a fork
     }
-
-    set_last_meal_time(philo, get_time_in_ms(philo->data));
-    print_message(philo, "is eating");
-    custom_usleep(philo->data->time_to_eat, philo->data);
-
-    pthread_mutex_unlock(&philo->right_fork->mutex);
-    pthread_mutex_unlock(&philo->left_fork->mutex);
-
-    set_meals_eaten(philo, get_meals_eaten(philo) + 1);
-
-    if (philo->data->number_of_meals != -1 && get_meals_eaten(philo) >= philo->data->number_of_meals)
+    set_last_meal_time(philo, get_time_in_ms(philo->data)); // after taking the forks, set the last meal time to the current time
+    print_message(philo, "is eating"); // print message that the philosopher is eating
+    custom_usleep(philo->data->time_to_eat, philo->data); // sleep for the specified time after eating
+    if (philo->id % 2 == 0) 
+    {
+        pthread_mutex_unlock(&philo->right_fork->mutex); // unlock the right fork first if ID is even
+        pthread_mutex_unlock(&philo->left_fork->mutex); // then unlock the left fork
+    } 
+    else 
+    {
+        pthread_mutex_unlock(&philo->left_fork->mutex); // unlock the left fork first if ID is odd
+        pthread_mutex_unlock(&philo->right_fork->mutex); // then unlock the right fork
+    }
+    set_meals_eaten(philo, get_meals_eaten(philo) + 1); // increment the meals eaten by the philosopher
+    if (philo->data->number_of_meals != -1 && get_meals_eaten(philo) >= philo->data->number_of_meals) // if the number of meals is set and the
+                                                                                                      // philosopher has eaten enough meals
+                                                                                                      // set ate_enough to 1
         set_ate_enough(philo, 1);
 }
 
@@ -169,18 +180,19 @@ void *philosopher_life(void *philosopher)
 {
     t_philosopher *philo = (t_philosopher *)philosopher;
 
-    while (!get_simulation_end(philo->data))
+    while (!get_simulation_end(philo->data)) // loop until the simulation ends
     {
-        philosopher_eat(philo);
-        if (get_simulation_end(philo->data))
+        philosopher_eat(philo); // first the philosopher eats 
+        if (get_simulation_end(philo->data)) // check if the simulation ended while eating, it can end after eating if the philosopher ate enough
+                                             // or if the philosopher died
             break;
-        print_message(philo, "is sleeping");
-        custom_usleep(philo->data->time_to_sleep, philo->data);
-        if (get_simulation_end(philo->data))
+        print_message(philo, "is sleeping"); // print message that the philosopher is sleeping
+        custom_usleep(philo->data->time_to_sleep, philo->data); // sleep for the specified time
+        if (get_simulation_end(philo->data)) // check if the simulation ended while sleeping
             break;
-        print_message(philo, "is thinking");
+        print_message(philo, "is thinking"); // print message that the philosopher is thinking
     }
-    return (NULL);
+    return (NULL); // return NULL to indicate the end of the thread
 }
 
 // Monitor for philosopher deaths
@@ -311,29 +323,29 @@ int parse_arguments(int argc, char **argv, t_data *data)
 
 int initialize_simulation(t_data *data)
 {
-    pthread_mutex_init(&data->print_mutex, NULL);
-    pthread_mutex_init(&data->simulation_mutex, NULL);
+    pthread_mutex_init(&data->print_mutex, NULL); // Initialize print_mutex
+    pthread_mutex_init(&data->simulation_mutex, NULL); // Initialize simulation_mutex
 
-    data->philosophers = malloc(sizeof(t_philosopher) * data->number_of_philosophers);
-    data->forks = malloc(sizeof(t_fork) * data->number_of_philosophers);
-    if (!data->philosophers || !data->forks)
+    data->philosophers = malloc(sizeof(t_philosopher) * data->number_of_philosophers); // Allocate memory for philosophers array
+    data->forks = malloc(sizeof(t_fork) * data->number_of_philosophers); // Allocate memory for forks array
+    if (!data->philosophers || !data->forks) // Check if memory allocation was successful
         return (1);
 
-    for (int i = 0; i < data->number_of_philosophers; i++)
+    for (int i = 0; i < data->number_of_philosophers; i++) // loop through the philosophers array
     {
-        data->philosophers[i].id = i + 1;
-        data->philosophers[i].meals_eaten = 0;
-        data->philosophers[i].ate_enough = 0;
-        data->philosophers[i].last_meal_time = get_time_in_ms(data);
-        data->philosophers[i].left_fork = &data->forks[i];
-        pthread_mutex_init(&data->forks[i].mutex, NULL);
-        if (i == data->number_of_philosophers - 1)
-            data->philosophers[i].right_fork = &data->forks[0];
+        data->philosophers[i].id = i + 1; // Set philosopher id
+        data->philosophers[i].meals_eaten = 0; // Set meals_eaten to 0
+        data->philosophers[i].ate_enough = 0; // Set ate_enough to 0
+        data->philosophers[i].last_meal_time = get_time_in_ms(data); // Set last_meal_time to the current time
+        data->philosophers[i].left_fork = &data->forks[i]; // Set left_fork to the current fork
+        pthread_mutex_init(&data->forks[i].mutex, NULL); // Initialize the fork mutex
+        if (i == data->number_of_philosophers - 1) // If we are at the last philosopher
+            data->philosophers[i].right_fork = &data->forks[0]; // Set right_fork to the first fork
         else
-            data->philosophers[i].right_fork = &data->forks[i + 1];
-        data->philosophers[i].data = data;
+            data->philosophers[i].right_fork = &data->forks[i + 1]; // other than that, set right_fork to the next fork
+        data->philosophers[i].data = data; // Set philosopher data to the simulation data
     }
-    return (0);
+    return (0); // Return 0 to indicate success
 }
 
 void cleanup(t_data *data, pthread_t *philosophers)
@@ -354,39 +366,53 @@ int main(int argc, char **argv)
     t_data          data;
     pthread_t       *philosophers;
     pthread_t       monitor, meal_checker;
+    int             i;
 
-    memset(&data, 0, sizeof(t_data));
-    data.start_time = get_time_in_ms(&data);
+    memset(&data, 0, sizeof(t_data)); // Initialize all fields in data to 0
+    data.start_time = get_time_in_ms(&data); // Set start time
 
-    if (!parse_arguments(argc, argv, &data))
+    if (!parse_arguments(argc, argv, &data)) // we check if the arguments are valid
         return (1);
-    if (initialize_simulation(&data))
+    if (initialize_simulation(&data)) // we initialize the simulation 
     {
         fprintf(stderr, "Error: Failed to initialize simulation.\n");
         return (1);
     }
 
-    philosophers = malloc(sizeof(pthread_t) * data.number_of_philosophers);
+    philosophers = malloc(sizeof(pthread_t) * data.number_of_philosophers); // Allocate memory for philosophers array
     if (!philosophers)
     {
-        free(data.philosophers);
-        return (1);
+        free(data.philosophers); // Free philosophers array if memory allocation failed
+        return (1); 
     }
 
-    for (int i = 0; i < data.number_of_philosophers; i++)
-        pthread_create(&philosophers[i], NULL, philosopher_life, &data.philosophers[i]);
+    // Using while loop instead of for loop
+    i = 0; 
+    while (i < data.number_of_philosophers) // loop through the philosophers array and for each philosopher create a thread
+    {
+        pthread_create(&philosophers[i], NULL, philosopher_life, &data.philosophers[i]); // Create a thread for each philosopher and
+                                                                                         // run the philosopher_life function 
+                                                                                         // pass the philosopher data as an argument
+        i++;
+    }
 
-    pthread_create(&monitor, NULL, death_monitor, &data);
-    if (data.number_of_meals != -1)
-        pthread_create(&meal_checker, NULL, meal_monitor, &data);
+    pthread_create(&monitor, NULL, death_monitor, &data); // create a thread for the death monitor
+    if (data.number_of_meals != -1) // if the number of meals is set
+        pthread_create(&meal_checker, NULL, meal_monitor, &data); // create a thread for the meal monitor
 
-    for (int i = 0; i < data.number_of_philosophers; i++)
-        pthread_join(philosophers[i], NULL);
+    // Using while loop instead of for loop
+    i = 0; 
+    while (i < data.number_of_philosophers) // loop through the philosophers array and wait for each philosopher thread to finish
+    {
+        pthread_join(philosophers[i], NULL); // wait for the philosopher thread to finish
+        i++;
+    }
 
-    pthread_join(monitor, NULL);
-    if (data.number_of_meals != -1)
-        pthread_join(meal_checker, NULL);
+    pthread_join(monitor, NULL); // wait for the death monitor thread to finish
+    if (data.number_of_meals != -1) // if the number of meals is set
+        pthread_join(meal_checker, NULL); // wait for the meal monitor thread to finish
 
-    cleanup(&data, philosophers);
+    cleanup(&data, philosophers); // clean up the simulation data and free memory
     return (0);
 }
+
