@@ -174,6 +174,7 @@ void philosopher_eat(t_philosopher *philo)
     print_message(philo, "is eating");
     custom_usleep(philo->data->time_to_eat, philo->data);
 
+    // Always unlock forks, even if simulation ends
     pthread_mutex_unlock(&philo->left_fork->mutex);
     pthread_mutex_unlock(&philo->right_fork->mutex);
 
@@ -181,6 +182,7 @@ void philosopher_eat(t_philosopher *philo)
     if (philo->data->num_meals != -1 && get_meals_eaten(philo) >= philo->data->num_meals)
         set_ate_enough(philo, 1);
 }
+
 
 
 
@@ -277,7 +279,8 @@ int initialize_simulation(t_data *data)
 
     pthread_mutex_init(&data->output_mutex, NULL);
     pthread_mutex_init(&data->start_mutex, NULL);
-    pthread_mutex_lock(&data->start_mutex);
+    // Removed pthread_mutex_lock(&data->start_mutex);
+
     i = 0;
     while (i < data->num_philosophers)
     {
@@ -301,6 +304,7 @@ int initialize_simulation(t_data *data)
 }
 
 
+
 void    cleanup(t_data *data)
 {
     int i;
@@ -316,16 +320,20 @@ void    cleanup(t_data *data)
     pthread_mutex_destroy(&data->start_mutex);
 }
 
-void    *single_philosopher(void *philosopher)
+void *single_philosopher(void *philosopher)
 {
-    t_philosopher   *philo;
+    t_philosopher *philo;
 
     philo = (t_philosopher *)philosopher;
+    pthread_mutex_lock(&philo->data->start_mutex);  // Lock to synchronize with main
+    pthread_mutex_unlock(&philo->data->start_mutex);  // Unlock immediately
+
     printf("%lld %d has taken a fork\n", get_time_in_ms() - philo->data->start_time, philo->id);
     custom_usleep(philo->data->time_to_die, philo->data);
     printf("%lld %d died\n", get_time_in_ms() - philo->data->start_time, philo->id);
     return (NULL);
 }
+
 
 int main(int argc, char **argv)
 {
@@ -340,14 +348,20 @@ int main(int argc, char **argv)
     if (initialize_simulation(&data))
         return (1);
     data.start_time = get_time_in_ms(); // Initialize start_time here
+
+    pthread_mutex_lock(&data.start_mutex);  // Lock start_mutex before starting threads
+
     if (data.num_philosophers == 1)
     {
+        pthread_mutex_unlock(&data.start_mutex);  // Unlock start_mutex
         set_last_meal_time(&data.philosophers[0], data.start_time);
         pthread_create(&philosophers[0], NULL, single_philosopher, &data.philosophers[0]);
         pthread_join(philosophers[0], NULL);
         cleanup(&data);
         return (0);
     }
+
+
     i = 0;
     while (i < data.num_philosophers)
     {
@@ -355,32 +369,42 @@ int main(int argc, char **argv)
         pthread_create(&philosophers[i], NULL, philosopher_life, &data.philosophers[i]);
         i++;
     }
-    pthread_mutex_unlock(&data.start_mutex);
-    while (!get_simulation_end(&data))
-{
-    all_ate_enough = 1;
-    i = 0;
-    while (i < data.num_philosophers)
-    {
-        long long time_since_last_meal = get_time_in_ms() - get_last_meal_time(&data.philosophers[i]);
 
-        if (time_since_last_meal >= data.time_to_die)
+    pthread_mutex_unlock(&data.start_mutex);  // Unlock start_mutex after starting threads
+
+    while (!get_simulation_end(&data))
+    {
+        all_ate_enough = 1;
+        i = 0;
+        while (i < data.num_philosophers)
         {
-            print_message(&data.philosophers[i], "died");
+            long long time_since_last_meal = get_time_in_ms() - get_last_meal_time(&data.philosophers[i]);
+
+            if (time_since_last_meal >= data.time_to_die)
+            {
+                print_message(&data.philosophers[i], "died");
+                set_simulation_end(&data, 1);
+                break;
+            }
+            if (!get_ate_enough(&data.philosophers[i]))
+                all_ate_enough = 0;
+            i++;
+        }
+        if (data.num_meals != -1 && all_ate_enough)
+        {
             set_simulation_end(&data, 1);
             break;
         }
-        if (!get_ate_enough(&data.philosophers[i]))
-            all_ate_enough = 0;
+        usleep(1000);
+    }
+
+    // Join philosopher threads before cleanup
+    i = 0;
+    while (i < data.num_philosophers)
+    {
+        pthread_join(philosophers[i], NULL);
         i++;
     }
-    if (data.num_meals != -1 && all_ate_enough)
-    {
-        set_simulation_end(&data, 1);
-        break;
-    }
-    usleep(1000);
-}
 
     cleanup(&data);
     return (0);
