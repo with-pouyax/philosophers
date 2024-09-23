@@ -131,7 +131,7 @@ void custom_usleep(long long time_in_ms, t_data *data)
     {
         if (get_simulation_end(data))
             break;
-        usleep(500);
+        usleep(100);
     }
 }
 
@@ -155,6 +155,7 @@ void philosopher_eat(t_philosopher *philo)
 
     if (philo->id % 2 == 0)
     {
+        usleep(500);
         // Even-numbered philosopher picks up right fork first
         pthread_mutex_lock(&philo->right_fork->mutex);
         print_message(philo, "has taken a fork");
@@ -197,14 +198,17 @@ void *philosopher_life(void *philosopher)
     philo = (t_philosopher *)philosopher;
     pthread_mutex_lock(&philo->data->start_mutex);
     pthread_mutex_unlock(&philo->data->start_mutex);
-
+    if (philo->id % 2 == 0)
+    {
+        usleep(1000);  // Small delay for even-numbered philosophers (adjust as necessary)
+    }
     // For odd-numbered simulations
     if (philo->data->num_philosophers % 2 == 1)
     {
         if (philo->id % 2 == 0)
         {
             // Even IDs sleep for time_to_eat milliseconds
-            usleep(philo->data->time_to_eat * 1000);
+            usleep(philo->data->time_to_eat * 500);
         }
         else if (philo->id % 3 == 0)
         {
@@ -228,6 +232,13 @@ void *philosopher_life(void *philosopher)
         print_message(philo, "is sleeping");
         custom_usleep(philo->data->time_to_sleep, philo->data);
         print_message(philo, "is thinking");
+        
+        if (get_time_in_ms() - get_last_meal_time(philo) >= philo->data->time_to_die)
+    {
+        print_message(philo, "died");
+        set_simulation_end(philo->data, 1);
+        break;
+    }
     }
     return (NULL);
 }
