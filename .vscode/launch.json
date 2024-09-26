@@ -1,0 +1,52 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch GDB Debugger",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/a",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "BUFFER_SIZE",
+                    "value": "10"
+                }
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Break on all exceptions",
+                    "text": "catch throw",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Break on abort",
+                    "text": "catch syscall abort",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Enable readable array printing",
+                    "text": "set print array on",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Enable pretty-printing of structures",
+                    "text": "set print pretty on",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

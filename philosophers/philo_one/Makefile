@@ -1,6 +1,6 @@
 # Variables
-CC = cc               # Compiler
-CFLAGS = -Wextra -Werror -Wall -pthread  # Compiler flags
+CC = gcc               # Compiler
+CFLAGS = -Wextra -Werror -Wall -pthread -g # Compiler flags
 NAME = philo_one           # Name of the output executable
 SRCS = philo.c          # Source files
 OBJS = $(SRCS:.c=.o)   # Object files
