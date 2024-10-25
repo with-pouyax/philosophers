@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 00:54:02 by pouyaximac       ###   ########.fr       */
+/*   Created: 2024/10/26 16:30:00 by pouyaximac        #+#    #+#             */
+/*   Updated: 2024/10/26 01:45:50 by pouyaximac       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static void	take_forks(t_philosopher *philo)
 	}
 	else
 	{
-		pthread_mutex_lock(&philo->right_fork->mutex);
-		print_message(philo, "has taken a fork");
 		pthread_mutex_lock(&philo->left_fork->mutex);
+		print_message(philo, "has taken a fork");
+		pthread_mutex_lock(&philo->right_fork->mutex);
 		print_message(philo, "has taken a fork");
 	}
 }
@@ -38,8 +38,8 @@ void	philosopher_eat(t_philosopher *philo)
 	set_last_meal_time(philo, get_time_in_ms());
 	print_message(philo, "is eating");
 	custom_usleep(philo->data->time_to_eat, philo->data);
-	pthread_mutex_unlock(&philo->left_fork->mutex);
 	pthread_mutex_unlock(&philo->right_fork->mutex);
+	pthread_mutex_unlock(&philo->left_fork->mutex);
 	set_meals_eaten(philo, get_meals_eaten(philo) + 1);
 	if (philo->data->num_meals != -1
 		&& get_meals_eaten(philo) >= philo->data->num_meals)
@@ -48,8 +48,18 @@ void	philosopher_eat(t_philosopher *philo)
 
 static void	initial_delay(t_philosopher *philo)
 {
-	if (philo->id % 2 == 0)
-		usleep(1000 * philo->data->time_to_eat);
+	if (philo->data->num_philosophers % 2 == 0)
+	{
+		if (philo->id % 2 == 0)
+			usleep(1000);
+	}
+	else
+	{
+		if (philo->id % 3 == 0)
+			usleep(2000);
+		else if (philo->id % 3 == 1)
+			usleep(4000);
+	}
 }
 
 void	*philosopher_life(void *philosopher)

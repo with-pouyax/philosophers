@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 00:54:21 by pouyaximac       ###   ########.fr       */
+/*   Created: 2024/10/26 16:30:00 by pouyaximac        #+#    #+#             */
+/*   Updated: 2024/10/26 01:46:25 by pouyaximac       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	*monitor_philosophers(void *data_ptr)
 			set_simulation_end(data, 1);
 			return (NULL);
 		}
-		usleep(100);
+		usleep(500);
 	}
 	return (NULL);
 }

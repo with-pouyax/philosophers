@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/26 15:30:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 00:32:13 by pouyaximac       ###   ########.fr       */
+/*   Created: 2024/10/26 16:45:00 by pouyaximac        #+#    #+#             */
+/*   Updated: 2024/10/26 01:47:12 by pouyaximac       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	is_valid_number(const char *str)
 	i = 0;
 	if (str[i] == '+' || str[i] == '-')
 		i++;
+	if (str[i] == '\0')
+		return (0);
 	while (str[i])
 	{
 		if (str[i] < '0' || str[i] > '9')
