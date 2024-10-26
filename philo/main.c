@@ -6,7 +6,7 @@
 /*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 00:54:43 by pouyaximac       ###   ########.fr       */
+/*   Updated: 2024/10/26 10:56:38 by pouyaximac       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	main(int argc, char **argv)
 {
 	t_data	data;
 
-	memset(&data, 0, sizeof(t_data));
-	if (!parse_arguments(argc, argv, &data))
+	memset(&data, 0, sizeof(t_data)); // here we are initializing the data struct to 0, the first argument is the pointer to the memory location, the second argument is the value to be set, and the third argument is the size of the memory location
+	if (!parse_arguments(argc, argv, &data)) // if the arguments are not valid, return 1
 		return (1);
 	if (initialize_simulation(&data))
 		return (1);

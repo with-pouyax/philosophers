@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/26 16:45:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 01:47:12 by pouyaximac       ###   ########.fr       */
+/*   Created: 2024/10/26 17:15:00 by pouyaximac        #+#    #+#             */
+/*   Updated: 2024/10/26 11:52:09 by pouyaximac       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ long long	ft_atoll(const char *str)
 	long long	result;
 	int			sign;
 	int			i;
+	int			overflow;
 
 	result = 0;
 	sign = 1;
@@ -25,19 +26,37 @@ long long	ft_atoll(const char *str)
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
-		if (str[i] == '-')
+		if (str[i++] == '-')
 			sign = -1;
-		i++;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (result > (LLONG_MAX / 10) || (result == LLONG_MAX / 10
-				&& (str[i] - '0') > (LLONG_MAX % 10)))
-			return (sign == 1 ? -1 : 0);
-		result = result * 10 + (str[i] - '0');
-		i++;
+		overflow = check_overflow(result, sign, str[i]);
+		if (overflow != 1)
+			return (overflow);
+		result = result * 10 + (str[i++] - '0');
 	}
 	return (result * sign);
+}
+
+int	check_overflow(long long result, int sign, char c)
+{
+	if (result > LLONG_MAX / 10)
+	{
+		if (sign == 1)
+			return (-1);
+		else
+			return (0);
+	}
+	if (result == LLONG_MAX / 10 &&
+		(c - '0') > (LLONG_MAX % 10))
+	{
+		if (sign == 1)
+			return (-1);
+		else
+			return (0);
+	}
+	return (1);
 }
 
 int	is_valid_number(const char *str)
@@ -71,7 +90,7 @@ void	custom_usleep(long long time_in_ms, t_data *data)
 	long long	start_time;
 
 	start_time = get_time_in_ms();
-	while (!get_simulation_end(data)
-		&& (get_time_in_ms() - start_time) < time_in_ms)
+	while (!get_simulation_end(data) &&
+		(get_time_in_ms() - start_time) < time_in_ms)
 		usleep(100);
 }

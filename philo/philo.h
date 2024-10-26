@@ -6,7 +6,7 @@
 /*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 00:53:22 by pouyaximac       ###   ########.fr       */
+/*   Updated: 2024/10/26 11:51:58 by pouyaximac       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,7 @@ int			main(int argc, char **argv);
 
 /* single_philo.c */
 void		*single_philosopher(void *philosopher);
+
+int	check_overflow(long long result, int sign, char c);
 
 #endif
