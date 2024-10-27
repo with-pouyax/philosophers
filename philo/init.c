@@ -6,7 +6,7 @@
 /*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 11:21:24 by pouyaximac       ###   ########.fr       */
+/*   Updated: 2024/10/27 10:28:09 by pouyaximac       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,38 @@
 
 int	parse_arguments(int argc, char **argv, t_data *data)
 {
-	long long	arg_value;
-	int			i;
-
-	if (argc < 5 || argc > 6) // if the number of arguments is less than 5 or more than 6, return 0
+	if (argc < 5 || argc > 6)
 	{
 		write(2, "Error: Invalid number of arguments.\n", 36);
 		return (0);
 	}
-	i = 1; 
+	if (!validate_arguments(argc, argv))
+		return (0);
+	data->num_philosophers = atoi(argv[1]);
+	data->time_to_die = ft_atoll(argv[2]);
+	data->time_to_eat = ft_atoll(argv[3]);
+	data->time_to_sleep = ft_atoll(argv[4]);
+	if (argc == 6)
+		data->num_meals = atoi(argv[5]);
+	else
+		data->num_meals = -1;
+	return (1);
+}
+
+int	validate_arguments(int argc, char **argv)
+{
+	long long	arg_value;
+	int			i;
+
+	i = 1;
 	while (i < argc)
 	{
-		if (!is_valid_number(argv[i])) // if the argument is not a valid number, return 0
+		if (!is_valid_number(argv[i]))
 		{
 			write(2, "Error: Invalid argument.\n", 25);
 			return (0);
 		}
-		arg_value = ft_atoll(argv[i]); // convert the argument to a long long
+		arg_value = ft_atoll(argv[i]);
 		if (arg_value <= 0 || arg_value > 4294967295)
 		{
 			write(2, "Error: Argument out of valid range.\n", 35);
@@ -38,11 +53,6 @@ int	parse_arguments(int argc, char **argv, t_data *data)
 		}
 		i++;
 	}
-	data->num_philosophers = atoi(argv[1]);
-	data->time_to_die = ft_atoll(argv[2]);
-	data->time_to_eat = ft_atoll(argv[3]);
-	data->time_to_sleep = ft_atoll(argv[4]);
-	data->num_meals = (argc == 6) ? atoi(argv[5]) : -1;
 	return (1);
 }
 

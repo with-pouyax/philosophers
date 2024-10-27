@@ -6,7 +6,7 @@
 /*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 11:51:58 by pouyaximac       ###   ########.fr       */
+/*   Updated: 2024/10/27 10:29:53 by pouyaximac       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void		*philosopher_life(void *philosopher);
 
 /* init.c */
 int			parse_arguments(int argc, char **argv, t_data *data);
+int	validate_arguments(int argc, char **argv);
 int			initialize_simulation(t_data *data);
 
 /* cleanup.c */
