@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
+/*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 00:54:43 by pouyaximac       ###   ########.fr       */
+/*   Updated: 2024/11/13 15:08:41 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ int	main(int argc, char **argv)
 {
 	t_data	data;
 
-	memset(&data, 0, sizeof(t_data));
-	if (!parse_arguments(argc, argv, &data))
+	memset(&data, 0, sizeof(t_data)); // we initialize the data struct to 0
+	if (!parse_arguments(argc, argv, &data)) // we parse the arguments
 		return (1);
-	if (initialize_simulation(&data))
+	if (initialize_simulation(&data)) // we initialize the simulation
 		return (1);
 	data.start_time = get_time_in_ms();
 	pthread_mutex_lock(&data.start_mutex);

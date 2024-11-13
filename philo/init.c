@@ -3,46 +3,89 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
+/*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 00:54:53 by pouyaximac       ###   ########.fr       */
+/*   Updated: 2024/11/13 15:08:24 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	parse_arguments(int argc, char **argv, t_data *data)
+static void	print_error(const char *message, size_t len)
 {
-	long long	arg_value;
-	int			i;
+	write(2, message, len);
+}
 
+/**
+ * @brief Checks if the number of arguments is valid.
+ *
+ * @param argc Argument count.
+ * @return int Returns 1 if valid, 0 otherwise.
+ */
+static int	check_argc(int argc)
+{
 	if (argc < 5 || argc > 6)
 	{
-		write(2, "Error: Invalid number of arguments.\n", 36);
+		print_error("Error: Invalid number of arguments.\n", 36);
 		return (0);
 	}
+	return (1);
+}
+
+/**
+ * @brief Validates each argument to ensure they are valid numbers within range.
+ *
+ * @param argc Argument count.
+ * @param argv Argument values.
+ * @return int Returns 1 if all arguments are valid, 0 otherwise.
+ */
+static int	validate_arguments(int argc, char **argv)
+{
+	int			i;
+	long long	arg_value;
+
 	i = 1;
-	while (i < argc)
+	while (i < argc) // we iterate through the arguments
 	{
-		if (!is_valid_number(argv[i]))
+		if (!is_valid_number(argv[i])) // we check if the argument is a valid number
 		{
-			write(2, "Error: Invalid argument.\n", 25);
+			print_error("Error: Invalid argument.\n", 25);
 			return (0);
 		}
-		arg_value = ft_atoll(argv[i]);
-		if (arg_value <= 0 || arg_value > 4294967295)
+		arg_value = ft_atoll(argv[i]); // we convert the argument to a long long
+		if (arg_value <= 0 || arg_value > 4294967295) // we check if the argument is within range, 4294967295 is the maximum value for an unsigned int
 		{
-			write(2, "Error: Argument out of valid range.\n", 35);
+			print_error("Error: Argument out of valid range.\n", 35);
 			return (0);
 		}
 		i++;
 	}
-	data->num_philosophers = atoi(argv[1]);
-	data->time_to_die = ft_atoll(argv[2]);
-	data->time_to_eat = ft_atoll(argv[3]);
-	data->time_to_sleep = ft_atoll(argv[4]);
-	data->num_meals = (argc == 6) ? atoi(argv[5]) : -1;
+	return (1);
+}
+
+/**
+ * @brief Parses and assigns command-line arguments to the data structure.
+ *
+ * @param argc Argument count.
+ * @param argv Argument values.
+ * @param data Pointer to the data structure.
+ * @return int Returns 1 on success, 0 on failure.
+ */
+int	parse_arguments(int argc, char **argv, t_data *data)
+{
+	if (!check_argc(argc)) // we check if the number of arguments is valid
+		return (0);
+	if (!validate_arguments(argc, argv)) // we validate the arguments
+		return (0); 
+	data->num_philosophers = atoi(argv[1]); // we assign the number of philosophers
+	data->time_to_die = ft_atoll(argv[2]); // we assign the time to die
+	data->time_to_eat = ft_atoll(argv[3]); // we assign the time to eat
+	data->time_to_sleep = ft_atoll(argv[4]); // we assign the time to sleep
+	if (argc == 6) // if there is a 6th argument
+		data->num_meals = atoi(argv[5]); // we assign the number of meals
+	else // if there is no 6th argument
+		data->num_meals = -1; // we assign -1 to the number of meals
 	return (1);
 }
 
