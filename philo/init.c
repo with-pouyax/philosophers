@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/13 15:08:24 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:12:56 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,14 @@ int	parse_arguments(int argc, char **argv, t_data *data)
 
 static int	initialize_mutexes(t_data *data)
 {
-	if (pthread_mutex_init(&data->output_mutex, NULL) != 0)
+	if (pthread_mutex_init(&data->output_mutex, NULL) != 0) // we initialize the output mutex
 		return (1);
-	if (pthread_mutex_init(&data->start_mutex, NULL) != 0)
+	if (pthread_mutex_init(&data->start_mutex, NULL) != 0) // we initialize the start mutex
 	{
 		pthread_mutex_destroy(&data->output_mutex);
 		return (1);
 	}
-	if (pthread_mutex_init(&data->simulation_end_mutex, NULL) != 0)
+	if (pthread_mutex_init(&data->simulation_end_mutex, NULL) != 0) // we initialize the simulation end mutex
 	{
 		pthread_mutex_destroy(&data->output_mutex);
 		pthread_mutex_destroy(&data->start_mutex);
@@ -142,7 +142,7 @@ static void	initialize_philosophers(t_data *data)
 
 int	initialize_simulation(t_data *data)
 {
-	if (initialize_mutexes(data))
+	if (initialize_mutexes(data)) // we initialize the mutexes
 	{
 		write(2, "Error: Failed to initialize mutexes.\n", 36);
 		return (1);

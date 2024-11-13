@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
+/*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:45:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 01:47:12 by pouyaximac       ###   ########.fr       */
+/*   Updated: 2024/11/13 15:18:49 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ long long	get_time_in_ms(void)
 {
 	struct timeval	tv;
 
-	gettimeofday(&tv, NULL);
+	gettimeofday(&tv, NULL); // we get the current time
 	return ((tv.tv_sec * 1000LL) + (tv.tv_usec / 1000));
 }
 

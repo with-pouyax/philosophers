@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
+/*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:30:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 01:45:50 by pouyaximac       ###   ########.fr       */
+/*   Updated: 2024/11/13 15:28:39 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ void	*philosopher_life(void *philosopher)
 	t_philosopher	*philo;
 
 	philo = (t_philosopher *)philosopher;
-	pthread_mutex_lock(&philo->data->start_mutex);
-	pthread_mutex_unlock(&philo->data->start_mutex);
-	initial_delay(philo);
+	pthread_mutex_lock(&philo->data->start_mutex); // we lock the start mutex to wait for the threads to be created
+	pthread_mutex_unlock(&philo->data->start_mutex); // we unlock the start mutex to wait for the threads to be created
+	initial_delay(philo); // we add an initial delay to avoid deadlocks
 	set_last_meal_time(philo, get_time_in_ms());
 	while (!get_simulation_end(philo->data))
 	{
