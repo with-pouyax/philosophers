@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:30:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/14 21:56:51 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/14 22:40:27 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	*monitor_philosophers(void *data_ptr)
 			set_simulation_end(data, 1);
 			return (NULL);
 		}
-		custom_usleep(5, data);
+		custom_usleep(1, data);
 	}
 	return (NULL);
 }

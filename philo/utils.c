@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:45:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/14 21:43:44 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/14 23:26:01 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,5 @@ void	custom_usleep(long long time_in_ms, t_data *data)
 	start_time = get_time_in_ms();
 	while (!get_simulation_end(data)
 		&& (get_time_in_ms() - start_time) < time_in_ms)
-		usleep(1);
+		usleep(50);
 }
