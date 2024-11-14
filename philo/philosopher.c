@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:30:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/13 15:28:39 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/14 22:27:18 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,19 @@
 
 static void	take_forks(t_philosopher *philo)
 {
-	if (philo->id % 2 == 0)
+	if (philo->id % 2 == 0) // Even philosophers
 	{
-		pthread_mutex_lock(&philo->left_fork->mutex);
+		custom_usleep(1, philo->data); // We add a delay to avoid deadlocks
+		pthread_mutex_lock(&philo->left_fork->mutex); // Lock left fork
 		print_message(philo, "has taken a fork");
-		pthread_mutex_lock(&philo->right_fork->mutex);
+		pthread_mutex_lock(&philo->right_fork->mutex); // Lock right fork
 		print_message(philo, "has taken a fork");
 	}
-	else
+	else // Odd philosophers
 	{
-		pthread_mutex_lock(&philo->left_fork->mutex);
+		pthread_mutex_lock(&philo->right_fork->mutex); // Lock right fork first
 		print_message(philo, "has taken a fork");
-		pthread_mutex_lock(&philo->right_fork->mutex);
+		pthread_mutex_lock(&philo->left_fork->mutex); // Then lock left fork
 		print_message(philo, "has taken a fork");
 	}
 }
@@ -61,6 +62,8 @@ static void	initial_delay(t_philosopher *philo)
 			usleep(4000);
 	}
 }
+// why do we need to add an initial delay, 1000 for even philosophers and 2000 for odd philosophers ? 
+// be
 
 void	*philosopher_life(void *philosopher)
 {

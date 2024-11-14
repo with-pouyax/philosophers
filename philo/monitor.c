@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pouyaximac <pouyaximac@student.42.fr>      +#+  +:+       +#+        */
+/*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:30:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/10/26 01:46:25 by pouyaximac       ###   ########.fr       */
+/*   Updated: 2024/11/14 21:56:51 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	*monitor_philosophers(void *data_ptr)
 			set_simulation_end(data, 1);
 			return (NULL);
 		}
-		usleep(500);
+		custom_usleep(5, data);
 	}
 	return (NULL);
 }
