@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:30:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/15 00:15:39 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/15 21:18:06 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	take_forks(t_philosopher *philo)
 {
 	if (philo->id % 2 == 0) // Even philosophers
 	{
-		//custom_usleep(1, philo->data); // We add a delay to avoid deadlocks
+		custom_usleep(1, philo->data); // We add a delay to avoid deadlocks
 		pthread_mutex_lock(&philo->left_fork->mutex); // Lock left fork
 		print_message(philo, "has taken a fork");
 		pthread_mutex_lock(&philo->right_fork->mutex); // Lock right fork
