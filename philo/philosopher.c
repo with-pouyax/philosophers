@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:30:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/15 21:18:06 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/16 20:09:52 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	take_forks(t_philosopher *philo)
 {
 	if (philo->id % 2 == 0) // Even philosophers
 	{
-		custom_usleep(1, philo->data); // We add a delay to avoid deadlocks
 		pthread_mutex_lock(&philo->left_fork->mutex); // Lock left fork
 		print_message(philo, "has taken a fork");
 		pthread_mutex_lock(&philo->right_fork->mutex); // Lock right fork
@@ -24,6 +23,7 @@ static void	take_forks(t_philosopher *philo)
 	}
 	else // Odd philosophers
 	{
+		custom_usleep(1, philo->data); // We add a delay to avoid deadlocks
 		pthread_mutex_lock(&philo->right_fork->mutex); // Lock right fork first
 		print_message(philo, "has taken a fork");
 		pthread_mutex_lock(&philo->left_fork->mutex); // Then lock left fork
@@ -49,8 +49,20 @@ void	philosopher_eat(t_philosopher *philo)
 
 static void	initial_delay(t_philosopher *philo)
 {
+    if (philo->data->num_philosophers % 2 == 0)
+	{
+		if (philo->id % 2 == 0)
+			usleep(10);
+	}
+	else
+	{
+		if (philo->id % 3 == 0)
+			usleep(20);
+		else if (philo->id % 3 == 1)
+			usleep(40);
+	}
     // Stagger start times by half of time_to_eat
-    usleep((philo->id - 1) * 1000); // if the philosopher is odd, we add a delay of time_to_eat / 2  
+   //usleep((philo->id - 1) * 1000);
 }
 
 // why do we need to add an initial delay, 1000 for even philosophers and 2000 for odd philosophers ? 
