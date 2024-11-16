@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:30:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/16 20:09:52 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/16 23:35:56 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,10 @@ void	philosopher_eat(t_philosopher *philo)
 
 static void	initial_delay(t_philosopher *philo)
 {
-    if (philo->data->num_philosophers % 2 == 0)
-	{
-		if (philo->id % 2 == 0)
-			usleep(10);
-	}
+    if (philo->id % 2 == 0)
+		usleep(100); // Even philosophers wait 100 microseconds
 	else
-	{
-		if (philo->id % 3 == 0)
-			usleep(20);
-		else if (philo->id % 3 == 1)
-			usleep(40);
-	}
+		usleep(200);
     // Stagger start times by half of time_to_eat
    //usleep((philo->id - 1) * 1000);
 }
