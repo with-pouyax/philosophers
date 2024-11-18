@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/18 18:37:33 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/18 23:17:00 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ int	create_philosopher_threads(t_data *data, pthread_t *philosophers)
 		{
 			write(2, "Error: Failed to create philosopher thread.\n", 44);
 			set_simulation_end(data, 1);
-			return (i); // Return the number of successfully created threads
+			return (i);
 		}
 		i++;
 	}
-	return (i); // All threads created successfully
+	return (i);
 }
 
 void	join_philosopher_threads(t_data *data, pthread_t *philosophers, int num_threads)

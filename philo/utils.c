@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:45:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/16 23:34:30 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/18 22:38:14 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ long long	get_time_in_ms(void)
 {
 	struct timeval	tv;
 
-	gettimeofday(&tv, NULL); // we get the current time
+	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000LL) + (tv.tv_usec / 1000));
 }
 

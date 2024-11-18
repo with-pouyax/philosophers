@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:30:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/18 18:22:16 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/18 23:33:14 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 static void	take_forks(t_philosopher *philo)
 {
-	if (philo->id % 2 == 0) // Even philosophers
+	if (philo->id % 2 == 0)
 	{
-		pthread_mutex_lock(&philo->left_fork->mutex); // Lock left fork
+		pthread_mutex_lock(&philo->left_fork->mutex);
 		print_message(philo, "has taken a fork");
-		pthread_mutex_lock(&philo->right_fork->mutex); // Lock right fork
+		pthread_mutex_lock(&philo->right_fork->mutex);
 		print_message(philo, "has taken a fork");
 	}
-	else // Odd philosophers
+	else
 	{
-		custom_usleep(1, philo->data); // We add a delay to avoid deadlocks
-		pthread_mutex_lock(&philo->right_fork->mutex); // Lock right fork first
+		custom_usleep(1, philo->data);
+		pthread_mutex_lock(&philo->right_fork->mutex);
 		print_message(philo, "has taken a fork");
-		pthread_mutex_lock(&philo->left_fork->mutex); // Then lock left fork
+		pthread_mutex_lock(&philo->left_fork->mutex);
 		print_message(philo, "has taken a fork");
 	}
 }
@@ -50,24 +50,21 @@ void	philosopher_eat(t_philosopher *philo)
 static void	initial_delay(t_philosopher *philo)
 {
     if (philo->id % 2 == 0)
-		usleep(100); // Even philosophers wait 100 microseconds
+		usleep(100);
 	else
 		usleep(200);
-    // Stagger start times by half of time_to_eat
+    
    //usleep((philo->id - 1) * 1000);
 }
-
-// why do we need to add an initial delay, 1000 for even philosophers and 2000 for odd philosophers ? 
-// be
 
 void	*philosopher_life(void *philosopher)
 {
 	t_philosopher	*philo;
 
 	philo = (t_philosopher *)philosopher;
-	pthread_mutex_lock(&philo->data->start_mutex); // Wait for the simulation to start
+	pthread_mutex_lock(&philo->data->start_mutex);
 	pthread_mutex_unlock(&philo->data->start_mutex);
-	initial_delay(philo); // Initial delay to prevent deadlocks
+	initial_delay(philo);
 	set_last_meal_time(philo, get_time_in_ms());
 	while (!get_simulation_end(philo->data))
 	{
