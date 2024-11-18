@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/13 15:12:56 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:55:30 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,7 @@ static void	print_error(const char *message, size_t len)
 	write(2, message, len);
 }
 
-/**
- * @brief Checks if the number of arguments is valid.
- *
- * @param argc Argument count.
- * @return int Returns 1 if valid, 0 otherwise.
- */
+
 static int	check_argc(int argc)
 {
 	if (argc < 5 || argc > 6)
@@ -32,29 +27,47 @@ static int	check_argc(int argc)
 	}
 	return (1);
 }
+static int	validate_philosopher_count(const char *str)
+{
+	long long	philosophers;
 
-/**
- * @brief Validates each argument to ensure they are valid numbers within range.
- *
- * @param argc Argument count.
- * @param argv Argument values.
- * @return int Returns 1 if all arguments are valid, 0 otherwise.
- */
-static int	validate_arguments(int argc, char **argv)
+	philosophers = ft_atoll(str);
+	if (philosophers <= 0 || philosophers > BUFFER_SIZE)
+	{
+		print_error("Error: Number of philosophers must be between 1 and 200.\n", 58);
+		return (0);
+	}
+	return (1);
+}
+
+static int	validate_num_meals(const char *str)
+{
+	long long	num_meals;
+
+	num_meals = ft_atoll(str);
+	if (num_meals <= 0 || num_meals > INT_MAX)
+	{
+		print_error("Error: Number of meals must be a positive integer.\n", 47);
+		return (0);
+	}
+	return (1);
+}
+
+static int	validate_other_arguments(int argc, char **argv)
 {
 	int			i;
 	long long	arg_value;
 
-	i = 1;
-	while (i < argc) // we iterate through the arguments
+	i = 2;
+	while (i < argc)
 	{
-		if (!is_valid_number(argv[i])) // we check if the argument is a valid number
+		if (!is_valid_number(argv[i]))
 		{
 			print_error("Error: Invalid argument.\n", 25);
 			return (0);
 		}
-		arg_value = ft_atoll(argv[i]); // we convert the argument to a long long
-		if (arg_value <= 0 || arg_value > 4294967295) // we check if the argument is within range, 4294967295 is the maximum value for an unsigned int
+		arg_value = ft_atoll(argv[i]);
+		if (arg_value <= 0 || arg_value > LLONG_MAX)
 		{
 			print_error("Error: Argument out of valid range.\n", 35);
 			return (0);
@@ -64,28 +77,37 @@ static int	validate_arguments(int argc, char **argv)
 	return (1);
 }
 
-/**
- * @brief Parses and assigns command-line arguments to the data structure.
- *
- * @param argc Argument count.
- * @param argv Argument values.
- * @param data Pointer to the data structure.
- * @return int Returns 1 on success, 0 on failure.
- */
+static int	validate_arguments(int argc, char **argv)
+{
+	if (!validate_philosopher_count(argv[1]))
+		return (0);
+	if (!validate_other_arguments(argc, argv))
+		return (0);
+	if (argc == 6 && !validate_num_meals(argv[5]))
+		return (0);
+	return (1);
+}
+
 int	parse_arguments(int argc, char **argv, t_data *data)
 {
-	if (!check_argc(argc)) // we check if the number of arguments is valid
+	long long	temp;
+
+	if (!check_argc(argc))
 		return (0);
-	if (!validate_arguments(argc, argv)) // we validate the arguments
-		return (0); 
-	data->num_philosophers = atoi(argv[1]); // we assign the number of philosophers
-	data->time_to_die = ft_atoll(argv[2]); // we assign the time to die
-	data->time_to_eat = ft_atoll(argv[3]); // we assign the time to eat
-	data->time_to_sleep = ft_atoll(argv[4]); // we assign the time to sleep
-	if (argc == 6) // if there is a 6th argument
-		data->num_meals = atoi(argv[5]); // we assign the number of meals
-	else // if there is no 6th argument
-		data->num_meals = -1; // we assign -1 to the number of meals
+	if (!validate_arguments(argc, argv))
+		return (0);
+	temp = ft_atoll(argv[1]);
+	data->num_philosophers = (int)temp;
+	data->time_to_die = ft_atoll(argv[2]);
+	data->time_to_eat = ft_atoll(argv[3]);
+	data->time_to_sleep = ft_atoll(argv[4]);
+	if (argc == 6)
+	{
+		temp = ft_atoll(argv[5]);
+		data->num_meals = (int)temp;
+	}
+	else
+		data->num_meals = -1;
 	return (1);
 }
 
