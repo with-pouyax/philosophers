@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/13 15:25:00 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:37:33 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,28 @@ int	create_philosopher_threads(t_data *data, pthread_t *philosophers)
 	int	i;
 
 	i = 0;
-	while (i < data->num_philosophers) // we iterate through the number of philosophers and create a thread for each one
+	while (i < data->num_philosophers)
 	{
-		set_last_meal_time(&data->philosophers[i], data->start_time); // we set the last meal time for the philosopher to the start time
+		set_last_meal_time(&data->philosophers[i], data->start_time);
 		if (pthread_create(&philosophers[i], NULL, philosopher_life,
-				&data->philosophers[i]) != 0) // we create the philosopher thread
+				&data->philosophers[i]) != 0)
 		{
 			write(2, "Error: Failed to create philosopher thread.\n", 44);
 			set_simulation_end(data, 1);
-			return (1);
+			return (i); // Return the number of successfully created threads
 		}
-		i++; // we go to the next philosopher
+		i++;
 	}
-	return (0);
+	return (i); // All threads created successfully
 }
 
-void	join_philosopher_threads(t_data *data, pthread_t *philosophers)
+void	join_philosopher_threads(t_data *data, pthread_t *philosophers, int num_threads)
 {
 	int	i;
+	(void)data;
 
 	i = 0;
-	while (i < data->num_philosophers)
+	while (i < num_threads)
 	{
 		pthread_join(philosophers[i], NULL);
 		i++;

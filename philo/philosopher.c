@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 16:30:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/16 23:35:56 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:22:16 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,19 @@ void	*philosopher_life(void *philosopher)
 	t_philosopher	*philo;
 
 	philo = (t_philosopher *)philosopher;
-	pthread_mutex_lock(&philo->data->start_mutex); // we lock the start mutex to wait for the threads to be created
-	pthread_mutex_unlock(&philo->data->start_mutex); // we unlock the start mutex to wait for the threads to be created
-	initial_delay(philo); // we add an initial delay, this will make a delay for 
+	pthread_mutex_lock(&philo->data->start_mutex); // Wait for the simulation to start
+	pthread_mutex_unlock(&philo->data->start_mutex);
+	initial_delay(philo); // Initial delay to prevent deadlocks
 	set_last_meal_time(philo, get_time_in_ms());
 	while (!get_simulation_end(philo->data))
 	{
 		philosopher_eat(philo);
+		if (get_simulation_end(philo->data))
+			break;
 		print_message(philo, "is sleeping");
 		custom_usleep(philo->data->time_to_sleep, philo->data);
+		if (get_simulation_end(philo->data))
+			break;
 		print_message(philo, "is thinking");
 	}
 	return (NULL);

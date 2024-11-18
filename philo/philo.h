@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/26 16:00:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/18 14:49:40 by pghajard         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -97,7 +85,7 @@ void		*monitor_philosophers(void *data_ptr);
 
 /* thread_utils.c */
 int			create_philosopher_threads(t_data *data, pthread_t *philosophers);
-void		join_philosopher_threads(t_data *data, pthread_t *philosophers);
+void		join_philosopher_threads(t_data *data, pthread_t *philosophers, int num_threads);
 
 /* main.c */
 int			main(int argc, char **argv);
