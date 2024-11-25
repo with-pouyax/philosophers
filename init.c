@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 12:01:47 by pghajard          #+#    #+#             */
-/*   Updated: 2024/11/19 12:05:48 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/25 09:23:01 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_argc(int argc)
 {
-	if (argc < 5 || argc > 6)
+	if (argc < 5 || argc > 6) // if the number of arguments is less than 5 or more than 6
 	{
 		print_error("Error: Invalid number of arguments.\n", 36);
 		return (0);

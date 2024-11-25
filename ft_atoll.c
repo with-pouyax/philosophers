@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 10:47:48 by pghajard          #+#    #+#             */
-/*   Updated: 2024/11/19 12:08:35 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/25 10:25:31 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,13 @@ long long	ft_atoll(const char *str)
 	int			i;
 
 	result = 0;
-	parse_initial(str, &i, &sign);
+	parse_initial(str, &i, &sign); // skip any leading whitespace and check for a sign
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		if (result > (LLONG_MAX / 10) || (result == (LLONG_MAX / 10) \
-						&& (str[i] - '0') > (LLONG_MAX % 10)))
+						&& (str[i] - '0') > (LLONG_MAX % 10))) // LLONG_MAX / 10, because later we multiply result by 10
+															   // result == LLONG_MAX / 10 because if result is equal to LLONG_MAX / 10 
+															   // and the next digit is greater than LLONG_MAX % 10, which is 7, then the result will overflow
 		{
 			if (sign == 1)
 				return (-1);
