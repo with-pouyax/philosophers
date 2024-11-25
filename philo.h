@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:30:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/19 12:06:39 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:31:38 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,8 @@ int			main(int argc, char **argv);
 
 /* validation.c */
 int			validate_arguments(int argc, char **argv);
+
+/* ft_usleep.c */
+void		ft_usleep(long long time_in_ms);
 
 #endif

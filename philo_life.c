@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_life.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 09:55:12 by pghajard          #+#    #+#             */
-/*   Updated: 2024/11/19 09:57:33 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:05:15 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	*single_philosopher(void *philosopher)
 void	initial_delay(t_philosopher *philo)
 {
 	if (philo->id % 2 == 0)
-		usleep(100);
+		ft_usleep(100);
 	else
-		usleep(200);
+		ft_usleep(200);
 }
 
 void	take_forks(t_philosopher *philo)

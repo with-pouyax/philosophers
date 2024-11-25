@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pghajard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 10:17:23 by pghajard          #+#    #+#             */
-/*   Updated: 2024/11/19 10:19:35 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:03:20 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,15 @@ int	validate_philosopher_count(const char *str)
 {
 	long long	philosophers;
 
+	if (!is_valid_number(str))
+	{
+		print_error("Error: Invalid argument.\n", 25);
+		return (0);
+	}
 	philosophers = ft_atoll(str);
 	if (philosophers <= 0 || philosophers > BUFFER_SIZE)
 	{
-		print_error("Error: Number of philosophers must be \
-						between 1 and 200.\n", 58);
+		print_error("Number of philosophers must be between 1 and 200.\n", 51);
 		return (0);
 	}
 	return (1);

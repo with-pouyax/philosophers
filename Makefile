@@ -6,13 +6,13 @@
 #    By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 14:00:00 by pouyaximac        #+#    #+#              #
-#    Updated: 2024/11/19 10:45:34 by pghajard         ###   ########.fr        #
+#    Updated: 2024/11/25 15:32:40 by pghajard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= philo
 
-CC		= gcc
+CC		= cc
 CFLAGS	= -Wall -Wextra -Werror -pthread
 
 SRCS	= main.c \
@@ -24,6 +24,7 @@ SRCS	= main.c \
 		  philo_life.c \
 		  monitor.c \
 		  ft_atoll.c \
+		  ft_usleep.c \
 		  cleanup.c
 
 OBJS	= $(SRCS:.c=.o)
