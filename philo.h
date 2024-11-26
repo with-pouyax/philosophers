@@ -6,7 +6,7 @@
 /*   By: pghajard <pghajard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:30:00 by pouyaximac        #+#    #+#             */
-/*   Updated: 2024/11/25 15:31:38 by pghajard         ###   ########.fr       */
+/*   Updated: 2024/11/26 09:03:18 by pghajard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <unistd.h>
-# include <stdlib.h>
 # include <stdio.h>
 # include <limits.h>
 # include <string.h>
