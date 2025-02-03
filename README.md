@@ -1,1 +1,1 @@
-![Philosophers](/philo.png)
+![Philosophers](/philo.jpg)
