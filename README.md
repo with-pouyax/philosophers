@@ -18,7 +18,7 @@ The project requires implementing an **efficient solution** that prevents **dead
 - Handles **precise timing** to regulate philosophers' eating and sleeping cycles.
 - Supports **command-line parameters** to adjust execution settings dynamically.
 - Ensures **efficient resource management** and avoids **memory leaks**.
-- Provides **logging and debugging support** for easy issue identification.
+- Provides **logging and debugging support** for easy issue identification. 
 
 ---
 
