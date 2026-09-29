@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-label="CONCURRENCY LAB project cover">
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0b1220"/><stop offset="1" stop-color="#17243b"/></linearGradient><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity=".055"/></pattern></defs>
+<rect width="1200" height="320" rx="24" fill="url(#bg)"/><rect width="1200" height="320" rx="24" fill="url(#grid)"/>
+<path d="M850 56h270v208H850z" fill="none" stroke="#f59e0b" stroke-opacity=".42" stroke-width="2"/>
+<path d="M850 264l76-78 52 42 81-114 61 60" fill="none" stroke="#f59e0b" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="1059" cy="114" r="10" fill="#f59e0b"/>
+<path d="M70 72h54" stroke="#f59e0b" stroke-width="7" stroke-linecap="round"/>
+<text x="70" y="105" fill="#98a9c2" font-family="Arial,sans-serif" font-size="19" letter-spacing="4">03 / SYSTEMS</text>
+<text x="70" y="190" fill="#f8fafc" font-family="Arial,sans-serif" font-size="51" font-weight="700" letter-spacing="1">CONCURRENCY LAB</text>
+<text x="70" y="239" fill="#f59e0b" font-family="Arial,sans-serif" font-size="19" font-weight="600" letter-spacing="3">C · PTHREADS · MUTEXES</text></svg>
